@@ -7,6 +7,7 @@ namespace GlobalGamejam
     public class GroundStationController : MonoBehaviour
     {
         private EnemyManager m_EnemyManager;
+        private SoundManager m_SoundManager;
 
         private Transform m_Dish;
         [HideInInspector]
@@ -18,6 +19,7 @@ namespace GlobalGamejam
         {
             m_Dish = transform.FindChild("Dish");
             m_EnemyManager = GameObject.Find("GameManager").GetComponent<EnemyManager>();
+            m_SoundManager = m_EnemyManager.GetComponent<SoundManager>();
         }
 
         void Update()
@@ -26,23 +28,27 @@ namespace GlobalGamejam
             {
                 case GroundStationPosition.left:
                     m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 135, m_DishMoveSpeed * Time.deltaTime));
-                    foreach (Vector2 v in m_EnemyManager.m_EnemyPositions)
+                    foreach (EnemyProperties v in m_EnemyManager.m_EnemyProperties)
                     {
-                     //   if (IsPointInClockwiseTriangle(v, transform.position, new Vector2(-50, 0), new Vector2(0, 50))) 
+                        Debug.Log(v.m_EnemyPosition);
+                        if (IsPointInClockwiseTriangle(v.m_EnemyPosition, new Vector2(0, 50), new Vector2(-50, 0), transform.position))
+                            v.m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(v.m_Difficulty, Vector2.Distance(v.m_EnemyPosition, transform.position), v.m_BeepTimer);
                     }
                     break;
                 case GroundStationPosition.up:
                     m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 90, m_DishMoveSpeed * Time.deltaTime));
-                    foreach (Vector2 v in m_EnemyManager.m_EnemyPositions)
+                    foreach (EnemyProperties v in m_EnemyManager.m_EnemyProperties)
                     {
-                       // if (IsPointInClockwiseTriangle(v, transform.position, new Vector2(-25, 50), new Vector2(25, 50))) 
+                        if (IsPointInClockwiseTriangle(v.m_EnemyPosition, transform.position, new Vector2(-25, 50), new Vector2(25, 50)))
+                            v.m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(v.m_Difficulty, Vector2.Distance(v.m_EnemyPosition, transform.position), v.m_BeepTimer);
                     }
                     break;
                 case GroundStationPosition.right:
                     m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 45, m_DishMoveSpeed * Time.deltaTime));
-                    foreach (Vector2 v in m_EnemyManager.m_EnemyPositions)
+                    foreach (EnemyProperties v in m_EnemyManager.m_EnemyProperties)
                     {
-                        //if (IsPointInClockwiseTriangle(v, transform.position, new Vector2(50, 50), new Vector2(50, 0))) 
+                        if (IsPointInClockwiseTriangle(v.m_EnemyPosition, transform.position, new Vector2(50, 50), new Vector2(50, 0)))
+                            v.m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(v.m_Difficulty, Vector2.Distance(v.m_EnemyPosition, transform.position), v.m_BeepTimer);
                     }
                     break;
             }
