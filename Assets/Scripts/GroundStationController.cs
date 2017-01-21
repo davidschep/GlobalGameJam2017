@@ -38,7 +38,6 @@ namespace GlobalGamejam
             m_manager = GameObject.Find("GameManager").GetComponent<GameManager>();
             m_SoundManager = m_manager.gameObject.GetComponent<SoundManager>();
             m_spaceshipSprites = Resources.LoadAll<Sprite>(m_spaceshipSpritePath);
-            m_GroundStationPosition = GroundStationPosition.up;
         }
 
         public void UpdateFrequency(float freq)
@@ -96,7 +95,27 @@ namespace GlobalGamejam
 
         public void ShipLured(int difficulty)
         {
+            m_GroundStationPosition = GroundStationPosition.up; SpawnVisualShip(difficulty);
             m_manager.MinigameManager.StartMinigame(m_manager, difficulty);
+        }
+
+        [SerializeField]
+        private Sprite m_Ufo1;
+        [SerializeField]
+        private Sprite m_Ufo2;
+        [SerializeField]
+        private Sprite m_Ufo3;
+
+        private void SpawnVisualShip(int difficulty)
+        {
+            GameObject ship = new GameObject();
+            if (difficulty < 4)
+                ship.AddComponent<SpriteRenderer>().sprite = m_Ufo1;
+            else if(difficulty < 7)
+                ship.AddComponent<SpriteRenderer>().sprite = m_Ufo2;
+            else
+                ship.AddComponent<SpriteRenderer>().sprite = m_Ufo3;
+            ship.AddComponent<SpaceshipController>().StartFlying();
         }
     }
 }
