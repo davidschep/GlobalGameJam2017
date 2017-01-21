@@ -38,7 +38,8 @@ namespace GlobalGamejam
             m_manager = GameObject.Find("GameManager").GetComponent<GameManager>();
             m_SoundManager = m_manager.gameObject.GetComponent<SoundManager>();
             m_spaceshipSprites = Resources.LoadAll<Sprite>(m_spaceshipSpritePath);
-            m_GroundStationPosition = GroundStationPosition.up;
+            m_GroundStationPosition = GroundStationPosition.up; SpawnVisualShip(1);
+            SpawnVisualShip(2);
         }
 
         public void UpdateFrequency(float freq)
@@ -56,7 +57,7 @@ namespace GlobalGamejam
                     break;
                 case GroundStationPosition.up:
                     m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 0, m_DishMoveSpeed * Time.deltaTime));
-                   
+
                     break;
                 case GroundStationPosition.right:
                     m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, -45, m_DishMoveSpeed * Time.deltaTime));
@@ -91,12 +92,12 @@ namespace GlobalGamejam
         public void LaneMatchUpdate(int difficulty, float maxFreqDiff, float freqDiff)
         {
             if (m_SoundManager != null)
-                m_SoundManager.PlaySpaceShipApproachingSound(difficulty,maxFreqDiff,freqDiff);
+                m_SoundManager.PlaySpaceShipApproachingSound(difficulty, maxFreqDiff, freqDiff);
         }
 
         public void ShipLured(int difficulty)
         {
-            m_GroundStationPosition = GroundStationPosition.up; SpawnVisualShip(difficulty);
+            SpawnVisualShip(difficulty);
             m_manager.MinigameManager.StartMinigame(m_manager, difficulty);
         }
 
@@ -112,7 +113,7 @@ namespace GlobalGamejam
             GameObject ship = new GameObject();
             if (difficulty < 4)
                 ship.AddComponent<SpriteRenderer>().sprite = m_Ufo1;
-            else if(difficulty < 7)
+            else if (difficulty < 7)
                 ship.AddComponent<SpriteRenderer>().sprite = m_Ufo2;
             else
                 ship.AddComponent<SpriteRenderer>().sprite = m_Ufo3;

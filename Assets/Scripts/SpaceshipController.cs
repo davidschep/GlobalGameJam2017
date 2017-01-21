@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpaceshipController : MonoBehaviour
 {
-    private Vector3 m_Point = new Vector3(-2.5f, 1.5f);
+    private Vector3 m_Point = new Vector3(-2.5f, 2.5f);
     private float m_FlySpeed = 2f;
     private float m_Up = 0.4f;
     private float m_Dir = 0.4f;
@@ -24,5 +24,11 @@ public class SpaceshipController : MonoBehaviour
         if (m_Pos < 0f + 0.1f)
             m_Dir = m_Up;
         transform.position = Vector3.Lerp(transform.position, m_Point + new Vector3(0, m_Pos), m_FlySpeed * Time.deltaTime);
+    }
+
+    public void Die()
+    {
+        GameObject.Instantiate(Resources.Load("Explosion") as GameObject, new Vector3(-1.5f, 3.5f), transform.rotation);
+        Destroy(gameObject);
     }
 }
