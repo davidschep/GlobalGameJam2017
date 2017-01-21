@@ -38,6 +38,7 @@ namespace GlobalGamejam
             m_manager = GameObject.Find("GameManager").GetComponent<GameManager>();
             m_SoundManager = m_manager.gameObject.GetComponent<SoundManager>();
             m_spaceshipSprites = Resources.LoadAll<Sprite>(m_spaceshipSpritePath);
+            m_GroundStationPosition = GroundStationPosition.up;
         }
 
         public void UpdateFrequency(float freq)

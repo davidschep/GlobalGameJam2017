@@ -19,8 +19,12 @@ namespace GlobalGamejam
             m_spaceShip.Initialize(this);
             m_minigameManager = new MinigameManager();
             m_minigameManager.Initialize();
-            //m_minigameManager.StartMinigame(this,10);
             m_spaceShip.Activate();
+        }
+
+        void OnSuccess(int difficulty)
+        {
+            m_ResearchPoints += difficulty;
         }
     }
 }

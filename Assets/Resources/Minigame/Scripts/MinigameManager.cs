@@ -11,8 +11,9 @@ namespace GlobalGamejam
     public class MinigameManager
     {
         public delegate void VoidDelegate();
+        public delegate void IntDelegate(int difficulty);
         public event VoidDelegate OnMinigameFailed;
-        public event VoidDelegate OnMinigameSuccess;
+        public event IntDelegate OnMinigameSuccess;
         // the key to switch the numbers to the left
         private const KeyCode m_switchLeft = KeyCode.LeftArrow;
         // the key to switch the numbers to the right
@@ -189,7 +190,7 @@ namespace GlobalGamejam
                 SetVisualTime(m_timeLeft);
                 yield return null;
             }
-            if (m_succeeded && OnMinigameSuccess != null) OnMinigameSuccess();
+            if (m_succeeded && OnMinigameSuccess != null) OnMinigameSuccess(m_difficulty);
             else if (OnMinigameFailed != null) OnMinigameFailed();
             yield break;
         }
