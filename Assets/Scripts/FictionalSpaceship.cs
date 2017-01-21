@@ -61,7 +61,7 @@ namespace GlobalGamejam
         {
             while(m_isActive)
             {
-                //Debug.Log("YPOS" + m_yPos + " SIDE " + m_pos + " FREQ DIFF " + Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency));
+                Debug.Log("YPOS" + m_yPos + " SIDE " + m_pos + " FREQ DIFF " + Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency));
                 // if the freq diff is too high to respond
                 if (Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency) > m_maxFreqDifference || m_pos != m_groundStation.m_GroundStationPosition)
                 {
@@ -78,7 +78,7 @@ namespace GlobalGamejam
                 else
                 {
                     m_yPos -= (m_MoveSpeed / 100 * (100 -(Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency) / m_maxFrequency))) * Time.deltaTime;
-                    Debug.Log("YPOS" + m_yPos + " SIDE " + m_pos + " FREQ DIFF " + Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency));
+                    //Debug.Log("YPOS" + m_yPos + " SIDE " + m_pos + " FREQ DIFF " + Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency));
                     if (m_yPos <= 0)
                     {
                         m_groundStation.ShipLured(m_Difficulty);
