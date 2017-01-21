@@ -57,7 +57,7 @@ namespace GlobalGamejam
             m_grid = new int[m_grid_rows][];
             m_textGrid = new Text[m_grid_rows][];
             // set the cover object
-            m_hidden = root.transform.FindChild("CoveredCenter").gameObject;
+            m_hidden = root.transform.FindChild("Cover").gameObject;
             // fill the grids
             for (int yi = 0; yi < m_grid_rows; yi++)
             {
@@ -69,7 +69,7 @@ namespace GlobalGamejam
                 {
                     // set the values of the grid elements
                     m_grid[yi][xi] = '*';
-                    m_textGrid[yi][xi] = root.transform.FindChild("Grid").FindChild(yi.ToString()).transform.FindChild(xi.ToString()).FindChild("LABEL").FindChild("Text").GetComponent<Text>();
+                    m_textGrid[yi][xi] = root.transform.FindChild("Grid").FindChild(yi.ToString()).transform.FindChild(xi.ToString()).GetComponent<Text>();
                 }
             }
             // set the size of both rows
@@ -78,14 +78,14 @@ namespace GlobalGamejam
             // fill the text row
             for (int i = 0; i < m_row_length; i++)
             {
-                m_textRow[i] = root.transform.FindChild("NumberBar").FindChild(i.ToString()).FindChild("Text").GetComponent<Text>();
+                m_textRow[i] = root.transform.FindChild("NumberBar").FindChild(i.ToString()).GetComponent<Text>();
             }
 
             // set the clock values
             m_clock = new Text[m_clock_digits];
             for (int i = 0; i < m_clock_digits; i++)
             {
-                m_clock[i] = root.transform.FindChild("Counter").FindChild(i.ToString()).FindChild("Text").GetComponent<Text>();
+                m_clock[i] = root.transform.FindChild("Counter").FindChild(i.ToString()).GetComponent<Text>();
             }
             SetNumbers();
         }
