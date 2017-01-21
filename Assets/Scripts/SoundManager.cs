@@ -24,11 +24,12 @@ namespace GlobalGamejam
         {
             if (beepTimer - ((distance / 10) * Time.deltaTime) < 0)
             {
-                m_AudioSource.PlayOneShot(m_ApproachSounds[difficulty]);
+                m_AudioSource.PlayOneShot(m_ApproachSounds[difficulty - 1]);
+                Debug.Log(-distance / 10);
                 return -distance / 10;
             }
             else
-                return (distance / 10) * Time.deltaTime;
+                return (0.4f) * Time.deltaTime;
         }
     }
 }
