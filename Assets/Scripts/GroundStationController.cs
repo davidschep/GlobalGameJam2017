@@ -4,10 +4,16 @@ using UnityEngine;
 
 namespace GlobalGamejam
 {
+    public enum GroundStationPosition
+    {
+        left, up, right
+    };
     public class GroundStationController : MonoBehaviour
     {
-        private EnemyManager m_EnemyManager;
+        private static string m_spaceshipSpritePath = "Art/Spaceships";
+        //private EnemyManager m_EnemyManager;
         private SoundManager m_SoundManager;
+        private float m_currentFrequency;
 
         private Transform m_Dish;
         private BoxCollider2D m_Collider2D;
@@ -17,39 +23,47 @@ namespace GlobalGamejam
         private float m_DishMoveSpeed = 10f;
 
         private GameObject m_Button;
+        private GameManager m_manager;
+
+        // the possible spaceship sprites
+        private Sprite[] m_spaceshipSprites;
+
+        public float CurrentFrequency { get { return m_currentFrequency; } }
 
         void Start()
         {
             m_Dish = transform.FindChild("Dish");
             m_Button = GameObject.Find("UI_Canvas").transform.FindChild("Background Image").FindChild("AntennaSwitchBG").FindChild("AntennaSwitch").gameObject;
             m_Collider2D = transform.FindChild("Collider").GetComponent<BoxCollider2D>();
-            m_EnemyManager = GameObject.Find("GameManager").GetComponent<EnemyManager>();
-            m_SoundManager = m_EnemyManager.GetComponent<SoundManager>();
+            //m_EnemyManager = GameObject.Find("GameManager").GetComponent<EnemyManager>();
+            m_manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            //m_SoundManager = m_EnemyManager.GetComponent<SoundManager>();
+            m_spaceshipSprites = Resources.LoadAll<Sprite>(m_spaceshipSpritePath);
         }
 
-                void Update()
-        {
-                if (!m_Collider2D.bounds.Contains(m_EnemyManager.m_FictionalEnemy.transform.position))
-                    m_EnemyManager.CreateFictionalEnemy();
-            switch (m_GroundStationPosition) // the turret will correct to a position according to what position it's set to.
-            {
-                case GroundStationPosition.left:
-                    m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 45, m_DishMoveSpeed * Time.deltaTime));
-                    if (m_Collider2D.bounds.Contains(m_EnemyManager.m_FictionalEnemy.transform.position) && m_EnemyManager.m_FictionalEnemy.transform.position.x < -5)
-                        m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_Difficulty, Vector2.Distance(m_EnemyManager.m_FictionalEnemy.transform.position, transform.position), m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer);
-                    break;
-                case GroundStationPosition.up:
-                    m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 0, m_DishMoveSpeed * Time.deltaTime));
-                    if (m_Collider2D.bounds.Contains(m_EnemyManager.m_FictionalEnemy.transform.position) && m_EnemyManager.m_FictionalEnemy.transform.position.x > -5 && m_EnemyManager.m_FictionalEnemy.transform.position.x < 5)
-                        m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_Difficulty, Vector2.Distance(m_EnemyManager.m_FictionalEnemy.transform.position, transform.position), m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer);
-                    break;
-                case GroundStationPosition.right:
-                    if (m_Collider2D.bounds.Contains(m_EnemyManager.m_FictionalEnemy.transform.position) && m_EnemyManager.m_FictionalEnemy.transform.position.x > 5)
-                        m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_Difficulty, Vector2.Distance(m_EnemyManager.m_FictionalEnemy.transform.position, transform.position), m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer);
-                    m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, -45, m_DishMoveSpeed * Time.deltaTime));
-                    break;
-            }
-        }
+        //void Update()
+        //{
+        //    //if (!m_Collider2D.bounds.Contains(m_EnemyManager.m_FictionalEnemy.transform.position))
+        //       // m_EnemyManager.CreateFictionalEnemy();
+        //    switch (m_GroundStationPosition) // the turret will correct to a position according to what position it's set to.
+        //    {
+        //        case GroundStationPosition.left:
+        //            m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 45, m_DishMoveSpeed * Time.deltaTime));
+        //            if (m_Collider2D.bounds.Contains(m_EnemyManager.m_FictionalEnemy.transform.position) && m_EnemyManager.m_FictionalEnemy.transform.position.x < -5)
+        //                m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalSpaceship>().m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalSpaceship>().m_Difficulty, Vector2.Distance(m_EnemyManager.m_FictionalEnemy.transform.position, transform.position), m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalSpaceship>().m_BeepTimer);
+        //            break;
+        //        case GroundStationPosition.up:
+        //            m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 0, m_DishMoveSpeed * Time.deltaTime));
+        //            if (m_Collider2D.bounds.Contains(m_EnemyManager.m_FictionalEnemy.transform.position) && m_EnemyManager.m_FictionalEnemy.transform.position.x > -5 && m_EnemyManager.m_FictionalEnemy.transform.position.x < 5)
+        //                m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalSpaceship>().m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalSpaceship>().m_Difficulty, Vector2.Distance(m_EnemyManager.m_FictionalEnemy.transform.position, transform.position), m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalSpaceship>().m_BeepTimer);
+        //            break;
+        //        case GroundStationPosition.right:
+        //            if (m_Collider2D.bounds.Contains(m_EnemyManager.m_FictionalEnemy.transform.position) && m_EnemyManager.m_FictionalEnemy.transform.position.x > 5)
+        //                m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalSpaceship>().m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalSpaceship>().m_Difficulty, Vector2.Distance(m_EnemyManager.m_FictionalEnemy.transform.position, transform.position), m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalSpaceship>().m_BeepTimer);
+        //            m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, -45, m_DishMoveSpeed * Time.deltaTime));
+        //            break;
+        //    }
+        //}
 
         private int m_ButtonPosition = 2;
 
@@ -74,10 +88,10 @@ namespace GlobalGamejam
                     break;
             }
         }
-    }
 
-    public enum GroundStationPosition
-    {
-        left, up, right
-    };
+        public void ShipLured(int difficulty)
+        {
+            m_manager.MinigameManager.StartMinigame(m_manager,difficulty);
+        }
+    }
 }
