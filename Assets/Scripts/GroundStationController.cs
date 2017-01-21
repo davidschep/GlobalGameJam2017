@@ -34,19 +34,19 @@ namespace GlobalGamejam
             switch (m_GroundStationPosition) // the turret will correct to a position according to what position it's set to.
             {
                 case GroundStationPosition.left:
-                    m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 135, m_DishMoveSpeed * Time.deltaTime));
+                    m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 45, m_DishMoveSpeed * Time.deltaTime));
                     if (m_Collider2D.bounds.Contains(m_EnemyManager.m_FictionalEnemy.transform.position) && m_EnemyManager.m_FictionalEnemy.transform.position.x < -5)
                         m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_Difficulty, Vector2.Distance(m_EnemyManager.m_FictionalEnemy.transform.position, transform.position), m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer);
                     break;
                 case GroundStationPosition.up:
-                    m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 90, m_DishMoveSpeed * Time.deltaTime));
+                    m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 0, m_DishMoveSpeed * Time.deltaTime));
                     if (m_Collider2D.bounds.Contains(m_EnemyManager.m_FictionalEnemy.transform.position) && m_EnemyManager.m_FictionalEnemy.transform.position.x > -5 && m_EnemyManager.m_FictionalEnemy.transform.position.x < 5)
                         m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_Difficulty, Vector2.Distance(m_EnemyManager.m_FictionalEnemy.transform.position, transform.position), m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer);
                     break;
                 case GroundStationPosition.right:
                     if (m_Collider2D.bounds.Contains(m_EnemyManager.m_FictionalEnemy.transform.position) && m_EnemyManager.m_FictionalEnemy.transform.position.x > 5)
                         m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer -= m_SoundManager.PlaySpaceShipApproachingSound(m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_Difficulty, Vector2.Distance(m_EnemyManager.m_FictionalEnemy.transform.position, transform.position), m_EnemyManager.m_FictionalEnemy.GetComponent<FictionalEnemy>().m_BeepTimer);
-                    m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, 45, m_DishMoveSpeed * Time.deltaTime));
+                    m_Dish.eulerAngles = new Vector3(0, 0, Mathf.LerpAngle(m_Dish.eulerAngles.z, -45, m_DishMoveSpeed * Time.deltaTime));
                     break;
             }
         }
@@ -59,14 +59,17 @@ namespace GlobalGamejam
             {
                 case 1:
                     m_Button.transform.eulerAngles = new Vector3(0, 0, 0);
+                    m_GroundStationPosition = GroundStationPosition.up;
                     m_ButtonPosition = 2;
                     break;
                 case 2:
                     m_Button.transform.eulerAngles = new Vector3(0, 0, -55);
+                    m_GroundStationPosition = GroundStationPosition.right;
                     m_ButtonPosition = 3;
                     break;
                 case 3:
                     m_Button.transform.eulerAngles = new Vector3(0, 0, 55);
+                    m_GroundStationPosition = GroundStationPosition.left;
                     m_ButtonPosition = 1;
                     break;
             }
