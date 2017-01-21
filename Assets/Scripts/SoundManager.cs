@@ -9,27 +9,23 @@ namespace GlobalGamejam
         [SerializeField]
         private AudioClip[] m_ApproachSounds = new AudioClip[10];
         private AudioSource m_AudioSource;
+        private static float m_delay = 2;
+        private float m_remainingDelay;
 
         void Start()
         {
+            m_remainingDelay = m_delay;
             m_AudioSource = GetComponent<AudioSource>();
         }
 
-        void Update()
+        public void PlaySpaceShipApproachingSound(int difficulty, float maxFreqDiff, float freqDiff)
         {
-
-        }
-
-        public float PlaySpaceShipApproachingSound(int difficulty, float distance, float beepTimer)
-        {
-            if (beepTimer - ((distance / 10) * Time.deltaTime) < 0)
+            m_remainingDelay -= Time.deltaTime;
+            if (m_remainingDelay <= 0)
             {
-                m_AudioSource.PlayOneShot(m_ApproachSounds[difficulty - 1]);
-                Debug.Log(-distance / 10);
-                return -distance / 10;
+                m_AudioSource.PlayOneShot(m_ApproachSounds[difficulty]);
+                m_remainingDelay = m_delay / 100 * (freqDiff / maxFreqDiff * 100) + .5f;
             }
-            else
-                return (0.4f) * Time.deltaTime;
         }
     }
 }

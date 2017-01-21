@@ -22,10 +22,5 @@ namespace GlobalGamejam
             //m_minigameManager.StartMinigame(this,10);
             m_spaceShip.Activate();
         }
-
-        void Update()
-        {
-
-        }
     }
 }
