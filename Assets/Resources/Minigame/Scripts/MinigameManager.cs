@@ -53,6 +53,8 @@ namespace GlobalGamejam
             m_succeeded = false;
             // load and instantiate the root
             GameObject root = GameObject.Instantiate(Resources.Load<GameObject>(m_rootPath));
+            root.transform.position = new Vector3(6.087f, -2.662f, 0);
+            root.transform.localScale = new Vector3(0.3752f, 0.3752f, 1);
             // set the amount of rows of both grids
             m_grid = new int[m_grid_rows][];
             m_textGrid = new Text[m_grid_rows][];
