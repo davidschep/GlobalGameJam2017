@@ -19,6 +19,8 @@ namespace GlobalGamejam
         private const KeyCode m_switchRight = KeyCode.RightArrow;
         // the resource path to instantiate the root prefab
         private const string m_rootPath = "Minigame/Prefabs/Root";
+        // the resource path to instantiate the row selection visuals
+        private const string m_switchPath = "Minigame/Resources/Sprites/Switch";
         // the const minigame grid variables
         private const int m_grid_columns = 10;
         private const int m_grid_rows = 4;
@@ -44,6 +46,11 @@ namespace GlobalGamejam
         private bool m_succeeded;
         // the selected row to switch numbers
         private int m_selectedRow;
+        // switch to visualize the selected row
+        private GameObject m_selectionVisualizer;
+        // the different switch sprites
+        private GameObject[] m_switchSprites;
+        // the cover which covers the hidden numbers
         private GameObject m_hidden;
 
         // load everything to prevent framedrops later
@@ -73,6 +80,17 @@ namespace GlobalGamejam
                     m_grid[yi][xi] = '*';
                     m_textGrid[yi][xi] = root.transform.FindChild("Grid").FindChild(yi.ToString()).transform.FindChild(xi.ToString()).GetComponent<Text>();
                 }
+            }
+            // set the visualisation size
+            m_switchSprites = new GameObject[m_grid_rows];
+            // set the visualisation sprites
+            for (int i = 0; i < m_grid_rows; i++)
+            {
+                m_switchSprites[i] = GameObject.Instantiate(Resources.Load<GameObject>(m_switchPath + i));
+                m_switchSprites[i].transform.SetParent(root.transform);
+                m_switchSprites[i].transform.localPosition = new Vector3(-6.981559f, 3.26062f, 0);
+                m_switchSprites[i].transform.localScale = new Vector3(12, 12, 1);
+                if(i > 0)m_switchSprites[i].SetActive(false);
             }
             // set the size of both rows
             m_row = new int[m_row_length];
@@ -158,13 +176,14 @@ namespace GlobalGamejam
                 }
                 if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
-                    m_selectedRow--;
-                    if (m_selectedRow < 0) m_selectedRow += m_grid_rows;
+                    int newRowIndex = m_selectedRow - 1;
+                    if (newRowIndex < 0) newRowIndex += m_grid_rows;
+                    SwitchRowVisual(newRowIndex);
                 }
                 if (Input.GetKeyDown(KeyCode.DownArrow))
                 {
-                    m_selectedRow++;
-                    if (m_selectedRow < 0) m_selectedRow -= m_grid_rows;
+                    int newRowIndex = (m_selectedRow + 1) % m_grid_rows;
+                    SwitchRowVisual(newRowIndex);
                 }
                 m_timeLeft -= Time.deltaTime;
                 SetVisualTime(m_timeLeft);
@@ -201,6 +220,13 @@ namespace GlobalGamejam
             }
             //}
             Validate();
+        }
+
+        private void SwitchRowVisual(int newRowIndex)
+        {
+            m_switchSprites[m_selectedRow].SetActive(false);
+            m_switchSprites[newRowIndex].SetActive(true);
+            m_selectedRow = newRowIndex;
         }
 
         private void Validate()
