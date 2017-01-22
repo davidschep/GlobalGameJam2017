@@ -21,7 +21,7 @@ namespace GlobalGamejam
         void Start()
         {
             m_groundStation = GameObject.Find("GroundStation").GetComponent<GroundStationController>();
-            m_researchImage = GameObject.Find("Wave (1)").GetComponent<Image>();
+            m_researchImage = GameObject.Find("ResearchFiller").GetComponent<Image>();
             m_spaceShip = new FictionalSpaceship();
             m_spaceShip.Initialize(this);
             m_minigameManager = new MinigameManager();
