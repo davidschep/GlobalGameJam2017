@@ -28,6 +28,9 @@ namespace GlobalGamejam
         // the possible spaceship sprites
         private Sprite[] m_spaceshipSprites;
 
+        private GameObject ship;
+        public GameObject Ship { get { return ship; } }
+
         public float CurrentFrequency { get { return m_currentFrequency; } }
 
         void Start()
@@ -38,8 +41,7 @@ namespace GlobalGamejam
             m_manager = GameObject.Find("GameManager").GetComponent<GameManager>();
             m_SoundManager = m_manager.gameObject.GetComponent<SoundManager>();
             m_spaceshipSprites = Resources.LoadAll<Sprite>(m_spaceshipSpritePath);
-            m_GroundStationPosition = GroundStationPosition.up; SpawnVisualShip(1);
-            SpawnVisualShip(2);
+            m_GroundStationPosition = GroundStationPosition.up;
         }
 
         public void UpdateFrequency(float freq)
@@ -110,7 +112,7 @@ namespace GlobalGamejam
 
         private void SpawnVisualShip(int difficulty)
         {
-            GameObject ship = new GameObject();
+            ship = new GameObject();
             if (difficulty < 4)
                 ship.AddComponent<SpriteRenderer>().sprite = m_Ufo1;
             else if (difficulty < 7)

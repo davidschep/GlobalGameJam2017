@@ -31,4 +31,9 @@ public class SpaceshipController : MonoBehaviour
         GameObject.Instantiate(Resources.Load("Explosion") as GameObject, new Vector3(-1.5f, 3.5f), transform.rotation);
         Destroy(gameObject);
     }
+
+    public void FlyAway()
+    {
+
+    }
 }
