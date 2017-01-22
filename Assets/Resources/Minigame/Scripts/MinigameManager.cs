@@ -113,8 +113,9 @@ namespace GlobalGamejam
 
         public void StartMinigame(GameManager manager, int difficulty)
         {
+            m_succeeded = false;
             m_difficulty = difficulty;
-            m_timeLeft = 10 + difficulty; // <- calculate a good value with the difficulty
+            m_timeLeft = 20 - difficulty; // <- calculate a good value with the difficulty
             SetNumbers();
             // process input until solved or out of time
             manager.StartCoroutine(MinigameUpdate());

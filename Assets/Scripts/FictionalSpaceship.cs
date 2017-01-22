@@ -31,6 +31,7 @@ namespace GlobalGamejam
         float m_yPos;
         // if the fictional spaceship is active
         bool m_isActive;
+        bool m_handleBeeps;
 
         // the curent lane
         GroundStationPosition m_pos;
@@ -50,6 +51,7 @@ namespace GlobalGamejam
         {
             if (!m_isActive)
             {
+                m_handleBeeps = true;
                 m_isActive = true;
                 SetValues();
                 m_manager.StartCoroutine(UpdatePosition());
@@ -71,7 +73,7 @@ namespace GlobalGamejam
                     m_maxFreqDifference = 20 / value;
                     if (m_yPos > m_maxHeight)
                     {
-                        m_manager.StopCoroutine(HandleBeeps());
+                        m_handleBeeps = false;
                         yield return new WaitForSeconds(Random.Range(1f, 5f));
                         m_isActive = false;
                         yield return null;
@@ -101,7 +103,7 @@ namespace GlobalGamejam
         private IEnumerator HandleBeeps()
         {
             float startY = m_yPos;
-            while (m_isActive)
+            while (m_isActive && m_handleBeeps)
             {
                 if (m_pos == m_groundStation.m_GroundStationPosition)
                 {
@@ -117,16 +119,14 @@ namespace GlobalGamejam
             m_pos = (GroundStationPosition)Random.Range(0, 3);
             m_currentFrequency = Random.Range(m_minFrequency, m_maxFrequency);
             float rand = Random.Range(0, 100);
-            //if (rand < 75) m_Difficulty = Random.Range(1, 5);
-            //else m_Difficulty = Random.Range(6, 10);
-            m_Difficulty = 9;
+            if (rand < 75) m_Difficulty = Random.Range(1, 5);
+            else m_Difficulty = Random.Range(6, 10);
             m_yPos = Random.Range(m_minStartHeight, m_maxStartHeight) - m_Difficulty * 2;
             Debug.Log("CurrentFreq" + m_currentFrequency + " POS" + m_pos.ToString());
         }
 
         private void UpdateFrequency()
         {
-            Debug.Log(m_frequencyIncrementValue);
             if (m_frequencyIncrementValue > 0 && m_frequencyIncrementValue + m_currentFrequency < m_maxFrequency) m_frequencyIncrementValue = (m_Difficulty > 6 ? 6 : m_Difficulty) * Time.deltaTime;
             else if (m_frequencyIncrementValue < 0 && m_frequencyIncrementValue + m_currentFrequency > m_minFrequency) m_frequencyIncrementValue = -((m_Difficulty > 6 ? 6 : m_Difficulty) * Time.deltaTime);
             else if (m_frequencyIncrementValue == 0) m_frequencyIncrementValue = Random.Range(-1f, 1f) * Time.deltaTime;

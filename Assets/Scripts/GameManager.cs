@@ -37,14 +37,16 @@ namespace GlobalGamejam
             m_researchImage.fillAmount = (float)m_ResearchPoints / 100;
             m_groundStation.Ship.GetComponent<SpaceshipController>().Die();
             m_spaceShip.Activate();
+            m_groundStation.DisableWarningSign();
         }
 
         public void OnFailed()
         {
             m_ResearchPoints -= Random.Range(1, 5);
             m_researchImage.fillAmount = m_ResearchPoints / 100;
-            Destroy(m_groundStation.Ship);
+            m_groundStation.Ship.GetComponent<SpaceshipController>().FlyAway();
             m_spaceShip.Activate();
+            m_groundStation.DisableWarningSign();
         }
     }
 }

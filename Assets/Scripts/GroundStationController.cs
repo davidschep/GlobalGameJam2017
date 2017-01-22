@@ -28,8 +28,13 @@ namespace GlobalGamejam
         private const float m_minHeightRot = 138;
         private const float m_maxHeightRot = -138;
 
+        // the warning sprite
+        private int m_enabledWarningType;
+        private GameObject[] m_warningSprite;
+
         // the possible spaceship sprites
         private Sprite[] m_spaceshipSprites;
+        private GameObject m_warningWindow;
 
         private GameObject m_ship;
         public GameObject Ship { get { return m_ship; } }
@@ -46,6 +51,21 @@ namespace GlobalGamejam
             m_spaceshipSprites = Resources.LoadAll<Sprite>(m_spaceshipSpritePath);
             m_GroundStationPosition = GroundStationPosition.up;
             m_heightPointer = GameObject.Find("UI_Canvas").transform.FindChild("HeightIndicator").FindChild("Pointer").gameObject;
+
+            // the warning spaceship sprites
+            m_warningWindow = GameObject.Instantiate(Resources.Load<GameObject>("Art/Spaceships/WarningFrame"));
+            m_warningWindow.transform.localScale = Vector3.one * 5;
+            m_warningWindow.SetActive(false);
+            m_warningWindow.transform.position = new Vector3(5.42f, 2.03f);
+            m_warningSprite = new GameObject[3];
+            for (int i = 0; i < 3; i++)
+            {
+                m_warningSprite[i] = GameObject.Instantiate(Resources.Load<GameObject>("Art/Spaceships/" + i));
+                m_warningSprite[i].transform.SetParent(m_warningWindow.transform);
+                m_warningSprite[i].transform.localPosition = new Vector2(0,-.045f);
+                m_warningSprite[i].transform.localScale = Vector3.one * .15f;
+                m_warningSprite[i].SetActive(false);
+            }
         }
 
         public void UpdateHeight(float height, float maxHeight)
@@ -130,12 +150,34 @@ namespace GlobalGamejam
         {
             m_ship = new GameObject();
             if (difficulty < 4)
+            {
                 m_ship.AddComponent<SpriteRenderer>().sprite = m_Ufo1;
+                EnableWarningSign(0);
+            }
             else if (difficulty < 7)
+            {
                 m_ship.AddComponent<SpriteRenderer>().sprite = m_Ufo2;
+                EnableWarningSign(1);
+            }
             else
+            {
                 m_ship.AddComponent<SpriteRenderer>().sprite = m_Ufo3;
+                EnableWarningSign(2);
+            }
             m_ship.AddComponent<SpaceshipController>().StartFlying();
+        }
+
+        private void EnableWarningSign(int type)
+        {
+            m_warningWindow.SetActive(true);
+            m_warningSprite[type].SetActive(true);
+            m_enabledWarningType = type;
+        }
+
+        public void DisableWarningSign()
+        {
+            m_warningWindow.SetActive(false);
+            m_warningSprite[m_enabledWarningType].SetActive(false);
         }
     }
 }
