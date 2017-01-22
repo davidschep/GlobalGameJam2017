@@ -61,15 +61,17 @@ namespace GlobalGamejam
         {
             while(m_isActive)
             {
-                Debug.Log("YPOS" + m_yPos + " SIDE " + m_pos + " FREQ DIFF " + Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency));
+                //Debug.Log("YPOS" + m_yPos + " SIDE " + m_pos + " FREQ DIFF " + Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency));
                 // if the freq diff is too high to respond
                 if (Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency) > m_maxFreqDifference || m_pos != m_groundStation.m_GroundStationPosition)
                 {
-                    m_yPos += (m_MoveSpeed / 100 * (Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency) / m_maxFrequency)) * Time.deltaTime * 15;
+                    // speed devided by 100 times the difference between the value and the worst value
+                    m_yPos += (m_MoveSpeed / 100 * (Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency) / m_maxFrequency)) * Time.deltaTime * 10 * m_Difficulty;
                     if (m_yPos > m_maxHeight)
                     {
                         m_manager.StopCoroutine(HandleBeeps());
                         yield return new WaitForSeconds(Random.Range(1f, 5f));
+                        m_isActive = false;
                         yield return null;
                         Activate();
                         yield break;
@@ -122,14 +124,14 @@ namespace GlobalGamejam
         {
             if (m_frequencyIncrementValue > 0)
             {
-                m_frequencyIncrementValue += Random.Range(-10, 110) / 100 * Time.deltaTime;
+                m_frequencyIncrementValue += Random.Range(0, 5) / 100 * m_Difficulty;
                 if (m_frequencyIncrementValue + m_currentFrequency >= m_maxFrequency) m_frequencyIncrementValue *= -1;
                 m_currentFrequency += m_frequencyIncrementValue;
             }
             else if (m_frequencyIncrementValue < 0)
             {
-                m_frequencyIncrementValue -= Random.Range(-10, 110) / 100 * Time.deltaTime;
-                if (m_frequencyIncrementValue <= m_maxFrequency) m_frequencyIncrementValue *= -1;
+                m_frequencyIncrementValue -= Random.Range(0, 5) / 100 * m_Difficulty;
+                if (m_frequencyIncrementValue + m_currentFrequency <= m_maxFrequency) m_frequencyIncrementValue *= -1;
                 m_currentFrequency += m_frequencyIncrementValue;
             }
             else m_frequencyIncrementValue = 1f / 100f * Random.Range(-100f, 100f);
