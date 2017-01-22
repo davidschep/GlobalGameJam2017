@@ -12,6 +12,7 @@ namespace GlobalGamejam
         private MinigameManager m_minigameManager;
         private FictionalSpaceship m_spaceShip;
         private GroundStationController m_groundStation;
+        private SoundManager m_soundManager;
         private Image m_researchImage;
 
         public MinigameManager MinigameManager { get { return m_minigameManager; } }
@@ -20,6 +21,7 @@ namespace GlobalGamejam
 
         void Start()
         {
+            m_soundManager = GetComponent<SoundManager>();
             m_groundStation = GameObject.Find("GroundStation").GetComponent<GroundStationController>();
             m_researchImage = GameObject.Find("ResearchFiller").GetComponent<Image>();
             m_spaceShip = new FictionalSpaceship();
@@ -38,6 +40,7 @@ namespace GlobalGamejam
             m_groundStation.Ship.GetComponent<SpaceshipController>().Die();
             m_spaceShip.Activate();
             m_groundStation.DisableWarningSign();
+            m_soundManager.PlayExplosion();
         }
 
         public void OnFailed()
