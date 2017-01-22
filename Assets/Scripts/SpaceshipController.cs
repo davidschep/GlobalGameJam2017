@@ -10,6 +10,8 @@ public class SpaceshipController : MonoBehaviour
     private float m_Dir = 0.4f;
     private float m_Pos = 0f;
 
+    private bool m_FlyingAway = false;
+
     public void StartFlying()
     {
         GetComponent<SpriteRenderer>().sortingOrder = -1;
@@ -24,6 +26,9 @@ public class SpaceshipController : MonoBehaviour
         if (m_Pos < 0f + 0.1f)
             m_Dir = m_Up;
         transform.position = Vector3.Lerp(transform.position, m_Point + new Vector3(0, m_Pos), m_FlySpeed * Time.deltaTime);
+
+        if (m_FlyingAway && Vector3.Distance(transform.position, m_Point) < 1f)
+            Destroy(gameObject);
     }
 
     public void Die()
@@ -34,6 +39,7 @@ public class SpaceshipController : MonoBehaviour
 
     public void FlyAway()
     {
-
+        m_Point = new Vector3(10, 7);
+        m_FlyingAway = true;
     }
 }
