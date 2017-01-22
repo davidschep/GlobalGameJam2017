@@ -34,7 +34,7 @@ namespace GlobalGamejam
         private void OnSuccess(int difficulty)
         {
             m_ResearchPoints += difficulty;
-            m_researchImage.fillAmount = m_ResearchPoints / 100;
+            m_researchImage.fillAmount = (float)m_ResearchPoints / 100;
             m_groundStation.Ship.GetComponent<SpaceshipController>().Die();
             m_spaceShip.Activate();
         }

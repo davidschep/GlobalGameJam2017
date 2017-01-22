@@ -66,7 +66,8 @@ namespace GlobalGamejam
                 if (Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency) > m_maxFreqDifference || m_pos != m_groundStation.m_GroundStationPosition)
                 {
                     // speed devided by 100 times the difference between the value and the worst value
-                    m_yPos += (m_MoveSpeed / 100 * (Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency) / m_maxFrequency)) * Time.deltaTime * 10 * m_Difficulty;
+                    m_yPos += m_Difficulty * Time.deltaTime;
+                    m_maxFreqDifference = 20 / m_Difficulty;
                     if (m_yPos > m_maxHeight)
                     {
                         m_manager.StopCoroutine(HandleBeeps());
@@ -115,8 +116,8 @@ namespace GlobalGamejam
             m_pos = (GroundStationPosition)Random.Range(0, 3);
             m_currentFrequency = Random.Range(m_minFrequency, m_maxFrequency);
             float rand = Random.Range(0, 100);
-            if (rand < 75) m_Difficulty = Random.Range(0, 5);
-            else m_Difficulty = Random.Range(5, 10);
+            if (rand < 75) m_Difficulty = Random.Range(1, 5);
+            else m_Difficulty = Random.Range(6, 10);
             m_yPos = Random.Range(m_minStartHeight, m_maxStartHeight);
             Debug.Log("CurrentFreq" + m_currentFrequency + " POS" + m_pos.ToString());
         }
