@@ -23,7 +23,7 @@ namespace GlobalGamejam
             m_remainingDelay -= Time.deltaTime;
             if (m_remainingDelay <= 0)
             {
-                m_AudioSource.PlayOneShot(m_ApproachSounds[difficulty]);
+                m_AudioSource.PlayOneShot(m_ApproachSounds[difficulty - 1]);
                 m_remainingDelay = m_delay / 100 * (freqDiff / maxFreqDiff * 100) + .5f;
             }
         }

@@ -42,8 +42,8 @@ namespace GlobalGamejam
 
         public void Initialize(GameManager manager)
         {
-                m_groundStation = GameObject.Find("GroundStation").GetComponent<GroundStationController>();
-                m_manager = manager;
+            m_groundStation = GameObject.Find("GroundStation").GetComponent<GroundStationController>();
+            m_manager = manager;
         }
 
         public void Activate()
@@ -59,7 +59,7 @@ namespace GlobalGamejam
 
         private IEnumerator UpdatePosition()
         {
-            while(m_isActive)
+            while (m_isActive)
             {
                 //Debug.Log("YPOS" + m_yPos + " SIDE " + m_pos + " FREQ DIFF " + Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency));
                 // if the freq diff is too high to respond
@@ -67,7 +67,8 @@ namespace GlobalGamejam
                 {
                     // speed devided by 100 times the difference between the value and the worst value
                     m_yPos += m_Difficulty * Time.deltaTime;
-                    m_maxFreqDifference = 20 / m_Difficulty;
+                    float value = m_Difficulty > 6 ? 6 : m_Difficulty;
+                    m_maxFreqDifference = 20 / value;
                     if (m_yPos > m_maxHeight)
                     {
                         m_manager.StopCoroutine(HandleBeeps());
@@ -80,7 +81,7 @@ namespace GlobalGamejam
                 }
                 else
                 {
-                    m_yPos -= (m_MoveSpeed / 100 * (100 -(Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency) / m_maxFrequency))) * Time.deltaTime;
+                    m_yPos -= (m_MoveSpeed / 100 * (100 - (Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency) / m_maxFrequency))) * Time.deltaTime;
                     //Debug.Log("YPOS" + m_yPos + " SIDE " + m_pos + " FREQ DIFF " + Mathf.Abs(m_currentFrequency - m_groundStation.CurrentFrequency));
                     if (m_yPos <= 0)
                     {
@@ -90,7 +91,7 @@ namespace GlobalGamejam
                     }
                 }
                 m_manager.GroundStationController.UpdateHeight(m_yPos, m_maxHeight);
-                //UpdateFrequency();
+                UpdateFrequency();
                 yield return null;
             }
             m_isActive = false;
@@ -100,7 +101,7 @@ namespace GlobalGamejam
         private IEnumerator HandleBeeps()
         {
             float startY = m_yPos;
-            while(m_isActive)
+            while (m_isActive)
             {
                 if (m_pos == m_groundStation.m_GroundStationPosition)
                 {
@@ -116,27 +117,21 @@ namespace GlobalGamejam
             m_pos = (GroundStationPosition)Random.Range(0, 3);
             m_currentFrequency = Random.Range(m_minFrequency, m_maxFrequency);
             float rand = Random.Range(0, 100);
-            if (rand < 75) m_Difficulty = Random.Range(1, 5);
-            else m_Difficulty = Random.Range(6, 10);
-            m_yPos = Random.Range(m_minStartHeight, m_maxStartHeight);
+            //if (rand < 75) m_Difficulty = Random.Range(1, 5);
+            //else m_Difficulty = Random.Range(6, 10);
+            m_Difficulty = 9;
+            m_yPos = Random.Range(m_minStartHeight, m_maxStartHeight) - m_Difficulty * 2;
             Debug.Log("CurrentFreq" + m_currentFrequency + " POS" + m_pos.ToString());
         }
 
         private void UpdateFrequency()
         {
-            if (m_frequencyIncrementValue > 0)
-            {
-                m_frequencyIncrementValue += Random.Range(0, 5) / 100 * m_Difficulty;
-                if (m_frequencyIncrementValue + m_currentFrequency >= m_maxFrequency) m_frequencyIncrementValue *= -1;
-                m_currentFrequency += m_frequencyIncrementValue;
-            }
-            else if (m_frequencyIncrementValue < 0)
-            {
-                m_frequencyIncrementValue -= Random.Range(0, 5) / 100 * m_Difficulty;
-                if (m_frequencyIncrementValue + m_currentFrequency <= m_maxFrequency) m_frequencyIncrementValue *= -1;
-                m_currentFrequency += m_frequencyIncrementValue;
-            }
-            else m_frequencyIncrementValue = 1f / 100f * Random.Range(-100f, 100f);
+            Debug.Log(m_frequencyIncrementValue);
+            if (m_frequencyIncrementValue > 0 && m_frequencyIncrementValue + m_currentFrequency < m_maxFrequency) m_frequencyIncrementValue = (m_Difficulty > 6 ? 6 : m_Difficulty) * Time.deltaTime;
+            else if (m_frequencyIncrementValue < 0 && m_frequencyIncrementValue + m_currentFrequency > m_minFrequency) m_frequencyIncrementValue = -((m_Difficulty > 6 ? 6 : m_Difficulty) * Time.deltaTime);
+            else if (m_frequencyIncrementValue == 0) m_frequencyIncrementValue = Random.Range(-1f, 1f) * Time.deltaTime;
+            else m_frequencyIncrementValue *= -1;
+            m_currentFrequency += m_frequencyIncrementValue;
         }
     }
 }
