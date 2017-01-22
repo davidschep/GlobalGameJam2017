@@ -13,6 +13,7 @@ public class BackgroundNoise : MonoBehaviour {
         m_NoiseMaker = GetComponent<AudioSource>();
         m_NoiseMaker.clip = m_Noise;
         m_NoiseMaker.Play();
+        DontDestroyOnLoad(gameObject);
     }
 
     void Update()
