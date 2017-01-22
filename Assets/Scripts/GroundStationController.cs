@@ -115,6 +115,8 @@ namespace GlobalGamejam
         {
             SpawnVisualShip(difficulty);
             m_manager.MinigameManager.StartMinigame(m_manager, difficulty);
+            GameObject anim = GameObject.Instantiate(Resources.Load("BlinkingLight") as GameObject, new Vector3(3.05f, -2.956f), transform.rotation);
+            anim.transform.localScale = Vector2.one * 5;
         }
 
         [SerializeField]
