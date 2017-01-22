@@ -24,24 +24,38 @@ namespace GlobalGamejam
 
         private GameObject m_Button;
         private GameManager m_manager;
+        private GameObject m_heightPointer;
+        private const float m_minHeightRot = 138;
+        private const float m_maxHeightRot = -138;
 
         // the possible spaceship sprites
         private Sprite[] m_spaceshipSprites;
 
-        private GameObject ship;
-        public GameObject Ship { get { return ship; } }
+        private GameObject m_ship;
+        public GameObject Ship { get { return m_ship; } }
 
         public float CurrentFrequency { get { return m_currentFrequency; } }
 
         void Start()
         {
             m_Dish = transform.FindChild("Dish");
-            m_Button = GameObject.Find("UI_Canvas").transform.FindChild("Background Image").FindChild("AntennaSwitchBG").FindChild("AntennaSwitch").gameObject;
+            m_Button = GameObject.Find("UI_Canvas").transform.FindChild("AntennaSwitchBG").FindChild("AntennaSwitch").gameObject;
             m_Collider2D = transform.FindChild("Collider").GetComponent<BoxCollider2D>();
             m_manager = GameObject.Find("GameManager").GetComponent<GameManager>();
             m_SoundManager = m_manager.gameObject.GetComponent<SoundManager>();
             m_spaceshipSprites = Resources.LoadAll<Sprite>(m_spaceshipSpritePath);
             m_GroundStationPosition = GroundStationPosition.up;
+            m_heightPointer = GameObject.Find("UI_Canvas").transform.FindChild("HeightIndicator").FindChild("Pointer").gameObject;
+        }
+
+        public void UpdateHeight(float height, float maxHeight)
+        {
+            if(m_heightPointer != null)
+            {
+                float heightPercentage = height / maxHeight * 100;
+                float angle = (m_maxHeightRot * 2 / 100) * heightPercentage + m_minHeightRot;
+                m_heightPointer.transform.localEulerAngles = new Vector3(0, 0, angle);
+            }
         }
 
         public void UpdateFrequency(float freq)
@@ -112,14 +126,14 @@ namespace GlobalGamejam
 
         private void SpawnVisualShip(int difficulty)
         {
-            ship = new GameObject();
+            m_ship = new GameObject();
             if (difficulty < 4)
-                ship.AddComponent<SpriteRenderer>().sprite = m_Ufo1;
+                m_ship.AddComponent<SpriteRenderer>().sprite = m_Ufo1;
             else if (difficulty < 7)
-                ship.AddComponent<SpriteRenderer>().sprite = m_Ufo2;
+                m_ship.AddComponent<SpriteRenderer>().sprite = m_Ufo2;
             else
-                ship.AddComponent<SpriteRenderer>().sprite = m_Ufo3;
-            ship.AddComponent<SpaceshipController>().StartFlying();
+                m_ship.AddComponent<SpriteRenderer>().sprite = m_Ufo3;
+            m_ship.AddComponent<SpaceshipController>().StartFlying();
         }
     }
 }

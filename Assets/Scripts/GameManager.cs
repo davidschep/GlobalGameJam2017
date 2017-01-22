@@ -15,6 +15,8 @@ namespace GlobalGamejam
         private Image m_researchImage;
 
         public MinigameManager MinigameManager { get { return m_minigameManager; } }
+        public FictionalSpaceship FictionalShip { get { return m_spaceShip; } }
+        public GroundStationController GroundStationController { get { return m_groundStation; } }
 
         void Start()
         {

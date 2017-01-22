@@ -88,6 +88,7 @@ namespace GlobalGamejam
                         yield break;
                     }
                 }
+                m_manager.GroundStationController.UpdateHeight(m_yPos, m_maxHeight);
                 //UpdateFrequency();
                 yield return null;
             }
