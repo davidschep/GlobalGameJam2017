@@ -19,7 +19,7 @@ public class AnimationPlayer : MonoBehaviour
         if (gameObject.name.Contains("Explosion"))
         {
             if(m_Timer >0.3f)
-                GetComponent<SpriteRenderer>().sortingOrder = -3;
+                GetComponent<SpriteRenderer>().sortingOrder = -4;
             if (m_Timer > 0.8f)
             {
                 GameObject.Find("GroundStation").transform.position = new Vector3(0, 0);
